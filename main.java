@@ -46,10 +46,16 @@ public class main {
                 }
             });
         }
+
+        title_panel.add(textfield);
+
+        frame.add(title_panel, BorderLayout.NORTH);
+        frame.add(button_panel);
+
     }
 
     public static void main(String[] args) {
-
+        new main();
     }
 
 }
