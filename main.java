@@ -11,6 +11,12 @@ public class main {
     JPanel title_panel = new JPanel();
     JPanel button_panel = new JPanel();
     JButton[] buttons = new JButton[9];
+    int turn;
+    boolean gameOver = false;
+    String player = "Player";
+    String ai = "AI";
+    int playerScore = 0;
+    int aiScore = 0;
 
     main() {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -28,6 +34,7 @@ public class main {
 
         title_panel.setLayout(new BorderLayout());
         title_panel.setBounds(0, 0, 800, 100);
+        
         button_panel.setLayout(new GridLayout(3, 3));
         button_panel.setBackground(new Color(150, 150, 150));
 
@@ -41,10 +48,20 @@ public class main {
                     for (int i = 0; i < 9; i++) {
                         if (e.getSource() == buttons[i]) {
                             buttons[i].setText("X");
+                            turn = 1;
                         }
                     }
                 }
             });
+        }
+
+        int randomNum = random.nextInt(2);
+        if (randomNum == 0) {
+            turn = 0;
+            textfield.setText("Player's turn");
+        } else {
+            turn = 1;
+            textfield.setText("AI's turn");
         }
 
         title_panel.add(textfield);
@@ -52,6 +69,61 @@ public class main {
         frame.add(title_panel, BorderLayout.NORTH);
         frame.add(button_panel);
 
+    }
+
+    public void aiMove() {
+        if (turn == 1 && !gameOver) {
+            int index = random.nextInt(9);
+            while (buttons[index].getText().equals("X") || buttons[index].getText().equals("0")) {
+                index = random.nextInt(9);
+            }
+            buttons[index].setText("0");
+            turn = 0;
+            textfield.setText("Player's turn");
+        }
+    }
+
+    public void aiTurn() {
+        int index = -1;
+        int[] possibleMoves = new int[9];
+
+        for (int i = 0; i < 9; i++) {
+            if (buttons[i].getText().equals("")) {
+                possibleMoves[index++] = i;
+            }
+        }
+
+        int move = -1;
+        if (index == 0) {
+            move = possibleMoves[0];
+        } else {
+            for (int i = 0; i < possibleMoves.length; i++) {
+                if (possibleMoves[i] != 0) {
+                    buttons[possibleMoves[i]].setText("");
+                }
+            }
+
+            while (move == -1) {
+                int random = new Random().nextInt(index + 1);
+                int currentMove = possibleMoves[random];
+                buttons[currentMove].setText("0");
+                if (checkForEnd("0")) {
+                    move = currentMove;
+                } else {
+                    buttons[currentMove].setText("");
+                    possibleMoves[random] = 0;
+                    if (possibleMoves[0] == 0) {
+                        move = possibleMoves[1];
+                    }
+                }
+            }
+        }
+    }
+
+    public boolean checkForEnd(String player) {
+        boolean result = false;
+
+        return result;
     }
 
     public static void main(String[] args) {
