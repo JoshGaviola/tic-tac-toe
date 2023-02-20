@@ -111,7 +111,8 @@ public class main {
                 gameOver = true;
                 if (buttons[i].getText().equals("X")) {
                     textfield.setText("Player wins");
-                    return;
+                    textfield.setForeground(Color.BLUE);
+                    playerScore++;
                 }
             }
         }
@@ -122,9 +123,11 @@ public class main {
                 gameOver = true;
                 if (buttons[j].getText().equals("X")) {
                     textfield.setText("Player wins!");
+                    textfield.setForeground(Color.BLUE);
                     playerScore++;
                 } else {
                     textfield.setText("AI wins!");
+                    textfield.setForeground(Color.RED);
                     aiScore++;
                 }
                 updateScore();
@@ -137,9 +140,11 @@ public class main {
             gameOver = true;
             if (buttons[0].getText().equals("X")) {
                 textfield.setText("Player wins!");
+                textfield.setForeground(Color.BLUE);
                 playerScore++;
             } else {
                 textfield.setText("AI wins!");
+                textfield.setForeground(Color.RED);
                 aiScore++;
             }
             updateScore();
@@ -150,19 +155,28 @@ public class main {
             gameOver = true;
             if (buttons[2].getText().equals("X")) {
                 textfield.setText("Player wins!");
+                textfield.setForeground(Color.BLUE);
                 playerScore++;
             } else {
                 textfield.setText("AI wins!");
+                textfield.setForeground(Color.RED);
                 aiScore++;
             }
             updateScore();
             return;
         }
         // check for tie
-        if (turnCount == 9) {
+        boolean isTie = true;
+        for (int i = 0; i < 9; i++) {
+            if (buttons[i].getText().equals("")) {
+                isTie = false;
+                break;
+            }
+        }
+        if (isTie) {
             gameOver = true;
-            textfield.setText("It's a tie!");
-            updateScore();
+            textfield.setText("Tie game!");
+            return;
         }
     }
 
@@ -200,6 +214,7 @@ public class main {
         restart_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                textfield.setForeground(Color.GREEN);
                 resetGame();
             }
         });
