@@ -10,6 +10,7 @@ public class main {
     private final JPanel title_panel = new JPanel();
     private final JPanel button_panel = new JPanel();
     private final JButton[] buttons = new JButton[9];
+    private final JButton restart_button = new JButton("Play Again");
     private int turn; // 0 is player, 1 is AI
     private boolean gameOver = false;
     private final String player = "Player";
@@ -62,6 +63,14 @@ public class main {
             });
         }
 
+        restart_button.setFocusable(false);
+        restart_button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resetGame();
+            }
+        });
+
         int randomNum = random.nextInt(2);
         if (randomNum == 0) {
             turn = 0;
@@ -74,8 +83,12 @@ public class main {
 
         title_panel.add(textfield);
 
+        JPanel button_pane_with_restart = new JPanel();
+        button_pane_with_restart.setLayout(new BorderLayout());
+        button_pane_with_restart.add(button_panel, BorderLayout.CENTER);
+        button_pane_with_restart.add(restart_button, BorderLayout.SOUTH);
         frame.add(title_panel, BorderLayout.NORTH);
-        frame.add(button_panel);
+        frame.add(button_pane_with_restart);
 
     }
 
@@ -169,20 +182,8 @@ public class main {
     }
 
     public void resetGame() {
-        for (int i = 0; i < 9; i++) {
-            buttons[i].setEnabled(true);
-            buttons[i].setText("");
-        }
-        if (playerScore >= 3 || aiScore >= 3) {
-            if (playerScore > aiScore) {
-                textfield.setText("Player wins the match!");
-            } else if (aiScore > playerScore) {
-                textfield.setText("AI wins the match!");
-            } else {
-                textfield.setText("The match is tied!");
-            }
-            playerScore = 0;
-            aiScore = 0;
+        for (JButton button : buttons) {
+            button.setText("");
         }
         turnCount = 0;
         gameOver = false;
@@ -195,6 +196,14 @@ public class main {
             textfield.setText("AI's turn");
             aiMove();
         }
+
+        restart_button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resetGame();
+            }
+        });
+
     }
 
     public static void main(String[] args) {
